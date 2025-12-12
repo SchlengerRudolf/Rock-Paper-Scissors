@@ -4,7 +4,9 @@ let computerScore = 0;
 const body = document.querySelector("body");
 const results = document.createElement("div")
 const text = document.createElement("p");
+const standings = document.createElement("p");
 results.appendChild(text);
+results.appendChild(standings);
 
 
 function getComputerChoice() {
@@ -16,14 +18,9 @@ function getComputerChoice() {
         default: return "scissors"
 }}
 
-function getHumanChoice() {
-    return prompt("Choose Rock, Paper or Scissors!");
-}
-
 function playRound(humanChoice) {
     let computerChoice = getComputerChoice();
     
-
     //Draw
     if (humanChoice === computerChoice) {
         text.textContent = "It's a draw!";
@@ -61,7 +58,23 @@ function playRound(humanChoice) {
             text.textContent = "Rock beats scissors. You lose!";
         }
     }
+    standings.textContent = humanScore + " : " + computerScore;
     body.appendChild(results);
+
+    if (endGame()) {
+        body.textContent = "";
+        if (humanScore > computerChoice) {
+            text.textContent = standings.textContent + " PLAYER WON THE GAME!"
+        }
+        else {
+            text.textContent = standings.textContent + " COMPUTER WON THE GAME!"
+        }
+        body.appendChild(text);
+    }
+}
+
+function endGame() {
+    return (humanScore >= 5 || computerScore >= 5);
 }
 
 function playGame() {
@@ -72,17 +85,6 @@ function playGame() {
             playRound(btn.textContent);
         })  
     })
-    
-
-  /*  if (humanScore > computerScore) {
-        console.log("Final score " + humanScore + " : " + computerScore + " You won the match!");
-    }
-    else if (humanScore < computerScore) {
-        console.log("Final score " + humanScore + " : " + computerScore + " You lost the match!");
-    }
-    else {
-        console.log("Final score " + humanScore + " : " + computerScore + ". You draw the match!");
-    } */
 }
 
-console.log(playGame());
+playGame();
