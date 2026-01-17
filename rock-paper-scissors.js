@@ -1,90 +1,99 @@
-let humanScore = 0;
-let computerScore = 0;
+body = document.querySelector("body");
+results = document.createElement("div")
+text = document.createElement("p");
+standings = document.createElement("p");
 
-const body = document.querySelector("body");
-const results = document.createElement("div")
-const text = document.createElement("p");
-const standings = document.createElement("p");
 results.appendChild(text);
 results.appendChild(standings);
 
+class RockPaperScissors {
+    #humanScore;
+    #computerScore;
 
-function getComputerChoice() {
-    switch(Math.floor(Math.random() * 3 + 1)) {
-        case 1:
-            return "rock"
-        case 2:
-            return "paper"
-        default: return "scissors"
-}}
+    constructor() {
+        this.#humanScore = 0;
+        this.#computerScore = 0; 
+    }
 
-function playRound(humanChoice) {
-    let computerChoice = getComputerChoice();
-    
-    //Draw
-    if (humanChoice === computerChoice) {
-        text.textContent = "It's a draw!";
-    }
-    //Rock
-    else if (humanChoice === "rock") {
-        if (computerChoice === "scissors") {
-            humanScore++;
-            text.textContent = "Rock beats scissors. You win!";
-        }
-        else {
-            computerScore++;
-            text.textContent = "Paper beats rock. You lose!";
-        }
-    }
-    //Paper
-    else if (humanChoice === "paper") {
-        if (computerChoice === "rock") {
-            humanScore++;
-            text.textContent = "Paper beats Rock. You win!";
-        }
-        else {
-            computerScore++;
-            text.textContent = "Scissors beats paper. You lose!";
-        }
-    }
-    //Scissors
-    else {
-        if (computerChoice === "paper") {
-            humanScore++;
-            text.textContent = "Scissors beats paper. You win!";
-        }
-        else {
-            computerChoice++;
-            text.textContent = "Rock beats scissors. You lose!";
-        }
-    }
-    standings.textContent = humanScore + " : " + computerScore;
-    body.appendChild(results);
 
-    if (endGame()) {
-        body.textContent = "";
-        if (humanScore > computerChoice) {
-            text.textContent = standings.textContent + " PLAYER WON THE GAME!"
+    #getComputerChoice() {
+        switch(Math.floor(Math.random() * 3 + 1)) {
+            case 1:
+                return "rock"
+            case 2:
+                return "paper"
+            default: return "scissors"
+    }}
+
+    #playRound(humanChoice) {
+        let computerChoice = this.#getComputerChoice();
+        
+        //Draw
+        if (humanChoice === computerChoice) {
+            text.textContent = "It's a draw!";
         }
+        //Rock
+        else if (humanChoice === "rock") {
+            if (computerChoice === "scissors") {
+                this.#humanScore++;
+                text.textContent = "Rock beats scissors. You win!";
+            }
+            else {
+                this.#computerScore++;
+                text.textContent = "Paper beats rock. You lose!";
+            }
+        }
+        //Paper
+        else if (humanChoice === "paper") {
+            if (computerChoice === "rock") {
+                this.#humanScore++;
+                text.textContent = "Paper beats Rock. You win!";
+            }
+            else {
+                this.#computerScore++;
+                text.textContent = "Scissors beats paper. You lose!";
+            }
+        }
+        //Scissors
         else {
-            text.textContent = standings.textContent + " COMPUTER WON THE GAME!"
+            if (computerChoice === "paper") {
+                this.#humanScore++;
+                text.textContent = "Scissors beats paper. You win!";
+            }
+            else {
+                this.#computerScore++;
+                text.textContent = "Rock beats scissors. You lose!";
+            }
         }
-        body.appendChild(text);
+        standings.textContent = this.#humanScore + " : " + this.#computerScore;
+        body.appendChild(results);
+
+        if (this.#endGame()) {
+            body.textContent = "";
+            if (this.#humanScore > this.#computerScore) {
+                text.textContent = standings.textContent + " PLAYER WON THE GAME!"
+            }
+            else {
+                text.textContent = standings.textContent + " COMPUTER WON THE GAME!"
+            }
+            body.appendChild(text);
+        }
+    }
+
+    #endGame() {
+        return (this.#humanScore >= 5 || this.#computerScore >= 5);
+    }
+
+    playGame() {
+        const btns = document.querySelectorAll("button");
+
+        btns.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                this.#playRound(btn.textContent);
+            })  
+        })
     }
 }
 
-function endGame() {
-    return (humanScore >= 5 || computerScore >= 5);
-}
-
-function playGame() {
-    const btns = document.querySelectorAll("button");
-
-    btns.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            playRound(btn.textContent);
-        })  
-    })
-}
-
-playGame();
+const rps1 = new RockPaperScissors();
+rps1.playGame();
